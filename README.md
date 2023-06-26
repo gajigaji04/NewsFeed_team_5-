@@ -33,6 +33,7 @@
 3. 10:00 ~ 11:00 회의 및 진행상황 점검 시간
 4. api 호출은 thunderclient로 실행
 5. 브랜치는 기능별로 나누기
+6. 폴더, 파일명은 영어로
 
 ## 1-6. 브랜치 나누기
 
@@ -82,7 +83,7 @@
 
 # 3. 와이어 프레임
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FX7lXWlYO1jRwAeQrKQfCLP%2FUntitled%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3DbsABLxUJVifV2Spf-1" allowfullscreen></iframe>
+![](https://velog.velcdn.com/images/gajigaji04/post/5373982c-6649-4e33-9477-1ec7ecdfee4f/image.png)
 
 # 4. ERD 설계
 
