@@ -15,9 +15,9 @@
 
 ## 1-4. 프로젝트 일정
 
-2023.06.26~2023.07.03
+- 2023.06.26~2023.07.03
 
-2023년 6월 26일 월요일 :S.A. 작성 / 작업 나누기 / 프로젝트용 깃 레포지토리 생성 / 배포 도메인 정하기 /프리티어rc, 리셋css파일 미리 생성
+- 2023년 6월 26일 월요일 :S.A. 작성 / 작업 나누기 / 프로젝트용 깃 레포지토리 생성 / 배포 도메인 정하기 /프리티어rc, 리셋css파일 미리 생성
 2023년 6월 27일 화요일 : 9:00 ~ 21:00 백엔드 기능 구현
 2023년 6월 28일 수요일 : 9:00 ~ 21:00 백엔드 기능 구현
 2023년 6월 29일 목요일 : 9:00 ~ 21:00 백엔드 기능 구현
@@ -33,7 +33,6 @@
 3. 10:00 ~ 11:00 회의 및 진행상황 점검 시간
 4. api 호출은 thunderclient로 실행
 5. 브랜치는 기능별로 나누기
-6. 폴더, 파일명은 영어로
 
 ## 1-6. 브랜치 나누기
 
@@ -82,8 +81,7 @@
 - 댓글 CRUD : CRUD시 새로고침
 
 # 3. 와이어 프레임
-
-![](https://velog.velcdn.com/images/gajigaji04/post/5373982c-6649-4e33-9477-1ec7ecdfee4f/image.png)
+![](https://velog.velcdn.com/images/gajigaji04/post/fc8e05a7-6072-4749-8ba9-a582ae77131d/image.png)
 
 # 4. ERD 설계
 
@@ -91,10 +89,11 @@
 
 # 5. API 명세
 
-![](https://velog.velcdn.com/images/gajigaji04/post/79168965-3eb4-49ce-8b06-3c9b8c74241d/image.png)
+![](https://velog.velcdn.com/images/gajigaji04/post/3ec7c834-c174-4651-9b8b-333b005a7197/image.png)
 
-![](https://velog.velcdn.com/images/gajigaji04/post/13a3e5ec-c1c3-42d4-97de-3dac2755c758/image.png)
+![](https://velog.velcdn.com/images/gajigaji04/post/5a0d256b-0eb3-4b8e-8b1b-630636496478/image.png)
 
-![](https://velog.velcdn.com/images/gajigaji04/post/139b1566-b776-4301-9a12-c7707877f04d/image.png)
+![](https://velog.velcdn.com/images/gajigaji04/post/e16d2b28-6634-475f-9391-4f3fd2fb38de/image.png)
 
-![](https://velog.velcdn.com/images/gajigaji04/post/fc296e8b-0505-496c-ada9-b12c6e34c45a/image.png)
+![](https://velog.velcdn.com/images/gajigaji04/post/7261c400-be88-41d6-9300-a5dc83c3a883/image.png)
+
