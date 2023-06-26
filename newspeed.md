@@ -1,0 +1,99 @@
+# 1. 프로젝트 개요
+
+## 1-1. 팀명 : 비트바이트
+
+팀장 : 김지혜
+팀원 : 김주희, 이다영, 이서원, 김태진
+
+## 1-2. 프로젝트명 : OEM(오늘 에러 무엇?)
+
+## 1-3. 프로젝트의 목적 또는 기능
+
+개발자들이 각자 발생한 오늘의 에러를 공유하여
+
+나중에 같은 상황이 발생하였을 때 참고할 수 있는 레퍼런스들을 만드는 것이 목적 (에러 백과 사전)
+
+## 1-4. 프로젝트 일정
+
+2023.06.26~2023.07.03
+
+2023년 6월 26일 월요일 :S.A. 작성 / 작업 나누기 / 프로젝트용 깃 레포지토리 생성 / 배포 도메인 정하기 /프리티어rc, 리셋css파일 미리 생성
+2023년 6월 27일 화요일 : 9:00 ~ 21:00 백엔드 기능 구현
+2023년 6월 28일 수요일 : 9:00 ~ 21:00 백엔드 기능 구현
+2023년 6월 29일 목요일 : 9:00 ~ 21:00 백엔드 기능 구현
+2023년 6월 30일 금요일 : 9:00 ~ 21:00 백엔드 기능 구현
+2023년 7월 1일 토요일 : 프론트 엔드
+2023년 7월 2일 일요일 : 발표 준비
+2023년 7월 3일 월요일 : 과제 제출(10시까지)
+
+## 1-5. 프로젝트 운영 방식
+
+1. 9:00 ~ 21:00 백엔드 구현에 집중한다.
+2. 이 외에 시간이 되는 분은 프론트엔드 구현에 힘쓴다.
+3. 10:00 ~ 11:00 회의 및 진행상황 점검 시간
+4. api 호출은 thunderclient로 실행
+5. 브랜치는 기능별로 나누기
+
+## 1-6. 브랜치 나누기
+
+- 백엔드 브랜치
+  main : 배포용
+  signup : 회원 가입
+  userme : 로그인
+  posts : 게시글
+  comments : 댓글
+  profile : 마이페이지
+  newsfeed : 뉴스피드
+
+- 프론트엔드 브랜치
+  css
+  html
+
+## 1-7. 역할 분담
+
+김지혜 : 뉴스피드
+이다영 : 댓글 CRUD
+김태진 : 프로필
+이서원 : 게시글 CRUD
+김주희 : 회원가입/로그인
+
+## 1-8. 팀 규칙
+
+1. 커밋 메시지 한글로 작성하기 ex. git commit -m "내용 한글로 작성"
+2. 상황/문제/오류 보고를 수시로 하기
+3. 자바스크립트 함수, 변수명은 카멜케이스 ex. let camelCase, const newsFeed
+4. 상수(변하지 않는 변수)는 const로 선언하기
+5. var 사용금지
+6. 의견이 달라도 상대방을 먼저 이해하기 (원활한 의사소통)
+7. 각자 역할에 최선을 다하기 (어려우면 빠르게 물어보기)
+
+# 2. 프로젝트 기능 구현
+
+## 2-1. 필수 기능
+
+- 사용자 인증 기능 : 회원 가입, 로그인 (비밀번호 암호화)
+- 프로필 : 이름, 한 줄 소개
+- 게시글 CRUD 기능 : CRUD시 새로고침 (프론트엔드에서 게시물 작성, 수정 및 삭제를 할 때마다 조회 API를 다시 호출하여 자연스럽게 최신의 게시물 내용을 화면에 보여줄 수 있도록 해야 합니다!)
+- 뉴스피드페이지 : 사용자별 뉴스피드, 언어별 뉴스피드, 전체 뉴스피드
+
+## 2-2. 추가 기능
+
+- 댓글 CRUD : CRUD시 새로고침
+
+# 3. 와이어 프레임
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FX7lXWlYO1jRwAeQrKQfCLP%2FUntitled%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3DbsABLxUJVifV2Spf-1" allowfullscreen></iframe>
+
+# 4. ERD 설계
+
+![](https://velog.velcdn.com/images/gajigaji04/post/f39c9c6f-f33f-4759-8eff-3b8b6d4bad99/image.png)
+
+# 5. API 명세
+
+![](https://velog.velcdn.com/images/gajigaji04/post/79168965-3eb4-49ce-8b06-3c9b8c74241d/image.png)
+
+![](https://velog.velcdn.com/images/gajigaji04/post/13a3e5ec-c1c3-42d4-97de-3dac2755c758/image.png)
+
+![](https://velog.velcdn.com/images/gajigaji04/post/139b1566-b776-4301-9a12-c7707877f04d/image.png)
+
+![](https://velog.velcdn.com/images/gajigaji04/post/fc296e8b-0505-496c-ada9-b12c6e34c45a/image.png)
