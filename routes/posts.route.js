@@ -1,36 +1,43 @@
 const express = require('express');
 const {Op} = require('sequelize');
-const {Posts} = require('../models');
+const {Posts, Users} = require('../models');
 const router = express.Router();
 
-//게시물 전체 목록 조회 API
-router.get('/posts', async (req, res) => {
-  const posts = await Posts.findAll({
-    // OME엔 닉네임이라 되어있는데 닉네임이 뭔지 몰라서 일단 title로 찾음
-    // 조립하면서 Users의 테이블을 참조하여 nickname도 받아오게
-    attributes: [
-      'postId',
-      'userId',
-      'title',
-      'createdAt',
-      'updatedAt',
-      'language',
-    ],
-  });
+// //게시물 전체 목록 조회 API
+// router.get('/posts', async (req, res) => {
+//   const posts = await Posts.findAll({
+//     // OME엔 닉네임이라 되어있는데 닉네임이 뭔지 몰라서 일단 title로 찾음
+//     // 조립하면서 Users의 테이블을 참조하여 nickname도 받아오게
+//     attributes: [
+//       'postId',
+//       'userId',
+//       'title',
+//       'createdAt',
+//       'updatedAt',
+//       'language',
+//     ],
+//   });
+//   if (!posts.length) {
+//     return res.status(400).json({
+//       message: '게시글 조회에 실패하셨습니다.',
+//     });
+//   } else {
+//     res.status(200).send(posts);
+//   }
 
-  if (!posts.length) {
-    return res.status(400).json({
-      message: '게시글 조회에 실패하셨습니다.',
-    });
-  } else {
-    res.status(200).send(posts);
-  }
-});
+//   res.status(200).json({data: posts});
+// });
 
 //게시물 상세 목록 조회 API
-router.get('/posts/:postId', async (req, res) => {
-  const {postId} = req.params;
+router.get('/posts', async (req, res) => {
+  const {postId} = req.query;
   const post = await Posts.findOne({
+    include: [
+      {
+        model: Users,
+        attributes: ['nickname'],
+      },
+    ],
     where: {postId: postId},
     attributes: [
       'postId',
@@ -64,8 +71,8 @@ router.post('/posts', async (req, res) => {
 });
 
 //게시물 수정 API
-router.patch('/posts/:postId', async (req, res) => {
-  const {postId} = req.params;
+router.patch('/posts', async (req, res) => {
+  const {postId} = req.query;
   // const {userId} = req.query;
   const {title, content, userId} = req.body;
 
@@ -98,7 +105,7 @@ router.patch('/posts/:postId', async (req, res) => {
 
 // 게시글 삭제
 router.delete('/posts/:postId', async (req, res) => {
-  const {postId} = req.params;
+  const {postId} = req.query;
   const {userId} = req.body;
 
   const post = await Posts.findOne({where: {postId}});
