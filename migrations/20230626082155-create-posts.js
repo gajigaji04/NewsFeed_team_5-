@@ -1,7 +1,5 @@
 'use strict';
 
-const {FOREIGNKEYS} = require('sequelize/types/query-types');
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -14,7 +12,6 @@ module.exports = {
       },
       userId: {
         allowNull: false,
-        autoIncrement: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
