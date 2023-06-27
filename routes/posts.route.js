@@ -106,7 +106,7 @@ router.patch('/posts', async (req, res) => {
 
 // 게시글 삭제
 router.delete('/posts/:postId', async (req, res) => {
-  const {postId} = req.params;
+  const {postId} = req.query;
   const {userId} = req.body;
 
   const post = await Posts.findOne({where: {postId}});
