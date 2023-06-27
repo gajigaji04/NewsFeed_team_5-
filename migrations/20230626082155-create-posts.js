@@ -1,4 +1,8 @@
 'use strict';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9946d48b88488867ea07112ef3edadc90cff6cd8
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
