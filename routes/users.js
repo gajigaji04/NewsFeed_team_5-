@@ -74,4 +74,33 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+// 로그인 API
+router.post('/login', async (req, res) => {
+  try {
+    const {email, pw} = req.body;
+
+    // 이메일 일치하는 유저 찾기
+    const user = await Users.findOne({where: {email}});
+
+    // 이메일 일치하지 않거나 패스워드 일치하지 않을 때
+    if (!user || user.pw !== pw) {
+      return res.status(412).json({errorMessage: '로그인에 실패하였습니다.'});
+    }
+
+    // JWT 생성 : 토큰 만료 시간 1시간
+    const token = jwt.sign({userId: user.userId}, 'customized-secret-key', {
+      expiresIn: '1h',
+    });
+
+    res.cookie('Authorization', `Bearer ${token}`);
+    res.status(200).json({token});
+  } catch (error) {
+    console.log(error);
+    res
+      .status(400)
+      .json({errorMessage: '요청한 데이터 형식이 올바르지 않습니다.'});
+    return;
+  }
+});
+
 module.exports = router;
