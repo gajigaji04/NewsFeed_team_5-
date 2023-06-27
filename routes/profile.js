@@ -37,6 +37,7 @@ router.get('/userme', authMiddleware, async (req, res) => {
         'updatedAt',
       ],
       where: {userId},
+      order: [['createdAt', 'DESC']],
     });
 
     if (!myPosts) {
