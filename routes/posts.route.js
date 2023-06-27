@@ -25,8 +25,6 @@ router.get('/posts', async (req, res) => {
   } else {
     res.status(200).send(posts);
   }
-
-  // res.status(200).json({data: posts});
 });
 
 //게시물 상세 목록 조회 API
