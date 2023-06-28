@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="login.js" type="module"></script>
+    <!-- <script src="login.js" type="module"></script> -->
 
     <title>Document</title>
 </head>
@@ -16,4 +16,20 @@
         <button>로그인</button>
     </form>
 </body>
+<script>
+    $('#login').on('submit', function(e) {
+        e.preventDefault();
+        console.log($('#email').val());
+        console.log($('#pw').val());
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/login',
+            data: {email: $('#email').val(), pw: $('#pw').val()},
+            success: function(response) {
+                console.log(response);
+            }
+        })
+    })
+</script>
 </html>
