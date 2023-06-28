@@ -48,6 +48,7 @@ router.get('/posts', async (req, res) => {
       'createdAt',
       'updatedAt',
       'language',
+      'content',
     ],
   });
 
@@ -75,8 +76,8 @@ router.post('/posts', authMiddleware, async (req, res) => {
 //게시물 수정 API
 router.patch('/posts', authMiddleware, async (req, res) => {
   const {postId} = req.query;
-  // const {userId} = req.query;
-  const {title, content, userId} = req.body;
+  const {userId} = res.locals.user;
+  const {title, content, language} = req.body;
 
   const post = await Posts.findOne({
     where: {postId: postId},
@@ -94,7 +95,7 @@ router.patch('/posts', authMiddleware, async (req, res) => {
   }
   //수정
   await Posts.update(
-    {title, content},
+    {title, content, language},
     {
       where: {
         [Op.and]: [{postId}, {userId}], // 게시글의 userId와 postId가 일치할 때 수정한다.
@@ -108,7 +109,7 @@ router.patch('/posts', authMiddleware, async (req, res) => {
 // 게시글 삭제
 router.delete('/posts', authMiddleware, async (req, res) => {
   const {postId} = req.query;
-  const {userId} = req.body;
+  const {userId} = res.locals.user;
 
   const post = await Posts.findOne({where: {postId}});
   if (!post) {
