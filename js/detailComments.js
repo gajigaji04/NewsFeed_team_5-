@@ -6,14 +6,17 @@ async function commentListing() {
   );
 
   const detailComments = document.querySelector('#detailComments');
-  detailComments.innerHTML = `<form action="/api/comments?postId=${postId}" method="POST">
+  detailComments.innerHTML = `
+  <main>
+  <form id = "writtingcomment" action="/api/comments?postId=${postId}" method="POST">
       <h3>댓글 작성하기</h3>
       <div>
-          <label>댓글 내용</label>
-          <input type="text" name="postContent" />
+          <input type="text" name="postContent" id= "commentinput" />
       </div>
       <button type="submit">작성</button>
-    </form>`;
+    </form>
+    </main>
+    `;
 
   const allComments = await response.json();
   const commentsList = document.querySelector('.commentsList');
@@ -22,29 +25,30 @@ async function commentListing() {
   } else {
     commentsList.innerHTML = allComments.allComments
       .map(comment => {
-        return `<div class = "commentbox">
-                  <div>
-                      <div>
-                        내용 : ${comment.content}
-                      </div>
-                      <div>
-                        작성일 : ${comment.createdAt}
-                      </div>
-                      <div>
-                        수정일 : ${comment.updatedAt}
-                      </div>
-                  </div>
-                  <button class = "openmodal${comment.commentId}" id= "${comment.commentId}" >수정</button>
-                  <button class="delete${comment.commentId}" id= "${comment.commentId}">삭제</button>
-                  <div class="modal" id =  "modal${comment.commentId}">
-                    <div id="modal-content">
-                      <h3>댓글 수정하기</h3>
-                      <input type="text" class="content${comment.commentId}" id="${comment.commentId}" />
-                      <button class="close-modal" id= "${comment.commentId}">닫기</button>
-                      <button class="edit${comment.commentId}" id= "${comment.commentId}" >수정하기</button>
+        return `<div class = "bigcommentbox">
+                    <div class = "commentbox">
+                        <div class = "innercommentbox" id ="commentcontent">
+                          내용 : ${comment.content}
+                        </div>
+                        <div class = "innercommentbox" id ="commentwritedate">
+                          작성일 : ${comment.createdAt}
+                        </div>
+                        <div class = "innercommentbox" id ="commenteditdate">
+                          수정일 : ${comment.updatedAt}
+                        </div>
                     </div>
-                  </div>
-                </div>
+                    <button class = "openmodal${comment.commentId}" id= "${comment.commentId}" >수정</button>
+                    <button class="delete${comment.commentId}" id= "${comment.commentId}">삭제</button>
+                    </div>
+                    <div class="modal" id =  "modal${comment.commentId}">
+                      <div id="modal-content">
+                        <h3>댓글 수정하기</h3>
+                        <input type="text" class="content${comment.commentId}" id="commenteditinput" />
+                        <button class="close-modal" id= "${comment.commentId}">닫기</button>
+                        <button class="edit${comment.commentId}" id= "${comment.commentId}" >수정</button>
+                      </div>
+                    </div>
+             
                  `;
       })
       .join('');
@@ -88,9 +92,11 @@ async function editcomment(commentId, content) {
     const result = await response.json();
     console.log(result.message);
     window.location.reload();
-    return alert(result.message);
+    alert(result.message);
+    return;
   } catch (error) {
     console.error('Error:', error);
+    return;
   }
 }
 
@@ -106,8 +112,10 @@ async function deleteComment(commentId) {
     const result = await response.json();
     console.log(result.message);
     window.location.reload();
-    return alert(result.message);
+    alert(result.message);
+    return;
   } catch (error) {
     console.error('Error:', error);
+    return;
   }
 }

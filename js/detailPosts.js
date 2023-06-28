@@ -13,9 +13,10 @@ async function postListing() {
     detailPost.innerHTML = post.message;
   } else {
     detailPost.innerHTML = `
+    <header>
     <input type="hidden" id="postId" value = ${post.data.postId} />
-                  <h1>${post.data.title}</h1>
-                  <h5>${post.data.User.nickname}</h5>
+                  <h1 id = "h1">${post.data.title}</h1>
+                  <h3>작성자 : ${post.data.User.nickname}</h3>
                   <p>언어 : ${post.data.language}</p>
                   <p>작성 : ${post.data.createdAt}</p>
                   <p>수정 : ${post.data.updatedAt}</p>
@@ -32,10 +33,10 @@ async function postListing() {
                           <label>언어</label>
                           <input type="text" class="language${post.data.postId}" id="${post.data.postId}" />
                           <button class="close-modal" id= "${post.data.postId}">닫기</button>
-                          <button class="edit${post.data.postId}" id= "${post.data.postId}" >수정하기</button>
+                          <button class="edit${post.data.postId}" id= "${post.data.postId}" >수정</button>
                     </div>
                   </div>
-
+                </header>
                  `;
   }
 
