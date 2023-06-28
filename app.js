@@ -12,7 +12,6 @@ const profileRouter = require('./routes/profile.js');
 app.use(express.json());
 app.use(CookieParser());
 
-
 app.use('/api', [usersRouter, postsRouteRouter, profileRouter, newsfeedsRouter]);
 
 app.listen(port, () => {
