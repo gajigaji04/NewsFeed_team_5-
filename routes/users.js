@@ -108,4 +108,12 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// 로그아웃 API
+router.get('/logout', (req, res) => {
+  return res
+    .clearCookie('Authorization')
+    .status(200)
+    .json({message: '로그아웃 되었습니다.'});
+});
+
 module.exports = router;
