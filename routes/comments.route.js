@@ -7,13 +7,6 @@ router.post('/comments', authMiddleware, async (req, res) => {
   const {postId} = req.query;
   const {userId} = res.locals.user;
   const {postContent} = req.body;
-  if (!postContent) {
-    res
-      .status(400)
-      .send(
-        "<script>alert('댓글 내용을 입력하세요.');location.href='localhost:3000/detail';</script>",
-      );
-  }
   try {
     if (postContent) {
       await Comments.create({
