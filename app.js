@@ -12,11 +12,8 @@ const profileRouter = require('./routes/profile.js');
 app.use(express.json());
 app.use(CookieParser());
 
-app.use('/api', [usersRouter, postsRouteRouter, profileRouter, newsfeedsRouter]);
 
-app.post("/allfeed", (req, res) => {
-  res.send("출력");
-});
+app.use('/api', [usersRouter, postsRouteRouter, profileRouter, newsfeedsRouter]);
 
 app.listen(port, () => {
   console.log(port, '로 서버가 열렸습니다!');

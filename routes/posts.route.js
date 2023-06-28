@@ -2,6 +2,7 @@ const express = require('express');
 const {Op} = require('sequelize');
 const {Posts, Users} = require('../models');
 const router = express.Router();
+const authMiddleware = require('../middlewares/auth-middleware');
 
 // //게시물 전체 목록 조회 API
 // router.get('/posts', async (req, res) => {
@@ -54,13 +55,13 @@ router.get('/posts', async (req, res) => {
 });
 
 //게시물 작성 API
-router.post('/posts', async (req, res) => {
-  // const {userId} = req.query;
+router.post('/posts', authMiddleware, async (req, res) => {
+  const {userId} = res.locals.user;
   // 임시 데이터로 userId를 req.body에 넣음. 조립과정에서 팀원들과 논의하여 req.query로 변경될 예정
   // 수정, 삭제도 마찬가지
-  const {userId, title, content, language} = req.body;
+  const {title, content, language} = req.body;
 
-  if (!userId || !language || !title || !content) {
+  if (!language || !title || !content) {
     res.status(400).json({
       message: '데이터 형식이 올바르지 않습니다. 게시물 작성에 실패하셨습니다.',
     });
@@ -72,7 +73,7 @@ router.post('/posts', async (req, res) => {
 });
 
 //게시물 수정 API
-router.patch('/posts', async (req, res) => {
+router.patch('/posts', authMiddleware, async (req, res) => {
   const {postId} = req.query;
   // const {userId} = req.query;
   const {title, content, userId} = req.body;
@@ -105,7 +106,7 @@ router.patch('/posts', async (req, res) => {
 });
 
 // 게시글 삭제
-router.delete('/posts/:postId', async (req, res) => {
+router.delete('/posts', authMiddleware, async (req, res) => {
   const {postId} = req.query;
   const {userId} = req.body;
 
