@@ -88,7 +88,6 @@ async function editcomment(commentId, content) {
         body: JSON.stringify({content}),
       },
     );
-
     const result = await response.json();
     console.log(result.message);
     window.location.reload();
