@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="http://localhost:3000/css/newsfeeds.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+    <div id=container>
+
+        <header>
+            <h1>OEM : 오늘 에러 무엇</h1>
+            <div id=iflogined>
+                <button onclick="loginfunc()" id="accountbtn">회원가입/로그인</button>
+            </div>
+        </header>
+
+        <main>
+            <button id="allfeeds" onclick="listing(allfeeds)">전체</button>
+            <input id="feedinput" placeholder="조회하고 싶은 언어/닉네임"></input>
+            <button id="langfeeds" onclick="listing(langfeeds)">언어</button>
+            <button id="userfeeds" onclick="listing(userfeeds)">닉네임</button>
+        </main>
+        <footer>
+            <div id="newsfeed"></div>
+
+        </footer>
+    </div>
+
+    <script type="text/javascript" src="http://localhost:3000/js/newsfeeds.js"></script>
+</body>
+
+</html>
