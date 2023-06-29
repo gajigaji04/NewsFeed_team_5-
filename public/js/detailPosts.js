@@ -16,6 +16,8 @@ async function postListing() {
     <header>
     <input type="hidden" id="postId" value = ${post.data.postId} />
                   <h1 id = "h1">${post.data.title}</h1>
+                  <button class= "likes" id="${post.data.postId}">♥︎  ${post.data.likes}</button>
+                  
                   <h3>작성자 : ${post.data.User.nickname}</h3>
                   <p>언어 : ${post.data.language}</p>
                   <p>작성 : ${post.data.createdAt}</p>
@@ -41,8 +43,14 @@ async function postListing() {
   }
 
   detailPost.addEventListener('click', ({target}) => {
+    const content = document.querySelector(`.content${target.id}`);
+    const title = document.querySelector(`.title${target.id}`);
+    const language = document.querySelector(`.language${target.id}`);
     if (target.matches(`.openmodal${target.id}`)) {
       const modal = document.querySelector(`#modal${target.id}`);
+      content.value = post.data.content;
+      language.value = post.data.language;
+      title.value = post.data.title;
       modal.style.display = 'block';
     }
     if (target.matches('.close-modal')) {
@@ -50,13 +58,13 @@ async function postListing() {
       modal.style.display = 'none';
     }
     if (target.matches(`.edit${target.id}`)) {
-      const content = document.querySelector(`.content${target.id}`).value;
-      const title = document.querySelector(`.title${target.id}`).value;
-      const language = document.querySelector(`.language${target.id}`).value;
-      editpost(target.id, title, content, language);
+      editpost(target.id, title.value, content.value, language.value);
     }
     if (target.matches(`.deletepost${target.id}`)) {
       deletepost(target.id);
+    }
+    if (target.matches('.likes')) {
+      uplikes(target.id);
     }
   });
 }
@@ -99,5 +107,44 @@ async function deletepost(postId) {
     return alert(result.message);
   } catch (error) {
     console.error('Error:', error);
+  }
+}
+
+// 좋아요
+async function uplikes(postId) {
+  if (localStorage.getItem('liked') == postId.toString()) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/unlikes`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({postId}),
+      });
+      localStorage.setItem('liked', '0');
+      const result = await response.json();
+      console.log(result.message);
+      location.href = 'http://localhost:3000/detail';
+      return alert(result.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  } else {
+    try {
+      const response = await fetch(`http://localhost:3000/api/likes`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({postId}),
+      });
+      localStorage.setItem('liked', postId);
+      const result = await response.json();
+      console.log(result.message);
+      location.href = 'http://localhost:3000/detail';
+      return alert(result.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 }
