@@ -63,13 +63,19 @@ router.post('/posts', authMiddleware, async (req, res) => {
   const {title, content, language} = req.body;
 
   if (!language || !title || !content) {
-    res.status(400).json({
-      message: '데이터 형식이 올바르지 않습니다. 게시물 작성에 실패하셨습니다.',
-    });
+    res
+      .status(400)
+      .send(
+        "<script>alert('데이터 형식이 올바르지 않습니다. 게시글 작성에 실패하였습니다.');location.href='http://localhost:3000/newsfeeds';</script>",
+      );
   } else {
     await Posts.create({userId, language, title, content});
 
-    res.status(201).json({massage: '게시글을 생성하였습니다.'});
+    res
+      .status(201)
+      .send(
+        "<script>alert('게시글을 생성하였습니다.');location.href='http://localhost:3000/newsfeeds';</script>",
+      );
   }
 });
 
@@ -89,7 +95,7 @@ router.patch('/posts', authMiddleware, async (req, res) => {
     });
   } else if (post.userId !== userId) {
     return res.status(401).json({
-      errorMessage:
+      message:
         '요청한 데이터 형식이 올바르지 않습니다. 게시글 수정에 실패하였습니다.',
     });
   }
@@ -125,7 +131,7 @@ router.delete('/posts', authMiddleware, async (req, res) => {
     },
   });
 
-  res.status(200).json({data: '게시글이 삭제되었습니다.'});
+  res.status(200).json({message: '게시글이 삭제되었습니다.'});
 });
 
 module.exports = router;

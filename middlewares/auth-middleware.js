@@ -10,7 +10,9 @@ module.exports = async (req, res, next) => {
     if (authType !== 'Bearer' || !authToken) {
       return res
         .status(403)
-        .json({errorMessage: '로그인이 필요한 기능입니다.'});
+        .send(
+          "<script>alert('로그인이 필요한 기능입니다.');location.href='http://localhost:3000/login';</script>",
+        );
     }
 
     // authToken 만료 확인, 서버가 발급한 토큰이 맞는지 확인
@@ -27,7 +29,9 @@ module.exports = async (req, res, next) => {
     console.error(error);
     res
       .status(403)
-      .json({errorMessage: '전달된 쿠키에서 오류가 발생하였습니다.'});
+      .send(
+        "<script>alert('전달된 쿠키에서 오류가 발생하였습니다.');location.href='http://localhost:3000/login';</script>",
+      );
     return;
   }
 };

@@ -19,6 +19,7 @@ async function commentListing() {
     `;
 
   const allComments = await response.json();
+  console.log(allComments);
   const commentsList = document.querySelector('.commentsList');
   if (allComments.length == 1 && allComments[0].errorMessage) {
     commentsList.innerHTML = allComments[0].errorMessage;
@@ -29,6 +30,9 @@ async function commentListing() {
                     <div class = "commentbox">
                         <div class = "innercommentbox" id ="commentcontent">
                           내용 : ${comment.content}
+                        </div>
+                        <div class = "innercommentbox" id ="commentnickname">
+                          닉네임 : ${comment.User.nickname}
                         </div>
                         <div class = "innercommentbox" id ="commentwritedate">
                           작성일 : ${comment.createdAt}
@@ -73,48 +77,36 @@ async function commentListing() {
   });
 }
 
-commentListing();
-
 // 수정하기
 async function editcomment(commentId, content) {
-  try {
-    const response = await fetch(
-      `http://localhost:3000/api/comments?commentId=${commentId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({content}),
+  const response = await fetch(
+    `http://localhost:3000/api/comments?commentId=${commentId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
-    const result = await response.json();
-    console.log(result.message);
-    window.location.reload();
-    alert(result.message);
-    return;
-  } catch (error) {
-    console.error('Error:', error);
-    return;
-  }
+      body: JSON.stringify({content}),
+    },
+  );
+  const result = await response.json();
+  console.log(result.message);
+  window.location.reload();
+  alert(result.message);
+  return;
 }
 
 // 삭제하기
 async function deleteComment(commentId) {
-  try {
-    const response = await fetch(
-      `http://localhost:3000/api/comments?commentId=${commentId}`,
-      {
-        method: 'DELETE',
-      },
-    );
-    const result = await response.json();
-    console.log(result.message);
-    window.location.reload();
-    alert(result.message);
-    return;
-  } catch (error) {
-    console.error('Error:', error);
-    return;
-  }
+  const response = await fetch(
+    `http://localhost:3000/api/comments?commentId=${commentId}`,
+    {
+      method: 'DELETE',
+    },
+  );
+  const result = await response.json();
+  console.log(result.message);
+  window.location.reload();
+  alert(result.message);
+  return;
 }

@@ -14,6 +14,7 @@ const commentsRouter = require('./routes/comments.route');
 app.use(express.json());
 app.use(CookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static('public'));
 
 app.use('/api', [
   usersRouter,
@@ -28,7 +29,7 @@ app.listen(port, () => {
 });
 
 app.get('/', (req, res) => {
-  res.send('메인페이지');
+  res.sendFile(__dirname + '/html/index.html');
 });
 
 app.get('/login', (req, res) => {
@@ -39,24 +40,8 @@ app.get('/detail', (req, res) => {
   res.sendFile(__dirname + '/html/detail.html');
 });
 
-app.get('/newsfeed', (req, res) => {
-  res.sendFile(__dirname + '/html/newsfeed.html');
-});
-
-app.get('/js/detailComments', (req, res) => {
-  res.sendFile(__dirname + '/js/detailComments.js');
-});
-
-app.get('/js/detailPosts', (req, res) => {
-  res.sendFile(__dirname + '/js/detailPosts.js');
-});
-
-app.get('/css/detail', (req, res) => {
-  res.sendFile(__dirname + '/css/detail.css');
-});
-
-app.get('/css/login', (req, res) => {
-  res.sendFile(__dirname + '/css/login.css');
+app.get('/newsfeeds', (req, res) => {
+  res.sendFile(__dirname + '/html/newsfeeds.html');
 });
 
 // 테이블이 없는 경우 모델 기반으로 테이블 생성
