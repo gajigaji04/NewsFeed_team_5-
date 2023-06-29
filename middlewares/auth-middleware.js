@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const {Users} = require('../models');
+const secretKey = require('../config/secretKey.json');
 
 module.exports = async (req, res, next) => {
   try {
@@ -16,7 +17,7 @@ module.exports = async (req, res, next) => {
     }
 
     // authToken 만료 확인, 서버가 발급한 토큰이 맞는지 확인
-    const decodedToken = jwt.verify(authToken, 'customized-secret-key');
+    const decodedToken = jwt.verify(authToken, secretKey.key);
     const userId = decodedToken.userId;
 
     // userId 사용자 DB에 있는지 확인
