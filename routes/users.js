@@ -113,8 +113,10 @@ router.post('/login', async (req, res) => {
     // 이메일 일치하는 유저 찾기
     const user = await Users.findOne({where: {email}});
 
+    const match = await bcrypt.compare(pw, user.pw);
+
     // 이메일 일치하지 않거나 패스워드 일치하지 않을 때
-    if (!user || user.pw !== pw) {
+    if (!user || !match) {
       return res
         .status(412)
         .send(
