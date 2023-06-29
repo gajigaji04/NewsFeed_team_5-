@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {Users, Posts} = require('../models');
+const {Users, Posts, Op} = require('../models');
 const authMiddleware = require('../middlewares/auth-middleware.js');
 
 const router = express.Router();
@@ -58,26 +58,48 @@ router.patch('/userme', authMiddleware, async (req, res) => {
   try {
     const {userId} = res.locals.user;
     const {nickname, intro} = req.body;
+    // const isExistNickname = await Users.findOne({
+    //   where: {
+    //     [Op.not]: [{nickname}],
+    //   },
+    // });
 
-    if (!userId) {
-      return res
-        .status(400)
-        .json({errorMessage: '로그인 후 이용 가능한 기능입니다.'});
-    } else if (!nickname || !intro) {
-      return res
-        .status(400)
-        .json({errorMessage: '데이터 형식이 올바르지 않습니다.'});
-    }
+    // console.log('nickname:', nickname);
+    // console.log('isExist:', isExistNickname.nickname);
 
-    await Users.update(
-      {
-        nickname,
-        intro,
-      },
-      {
-        where: {userId},
-      },
-    );
+    // const a = await Users.findAll({
+    //   attributes: ['nickname'],
+    //   where: {
+    //     nickname,
+    //   },
+    // });
+
+    // a.forEach(i => {
+    //   console.log(a);
+    // });
+    console.log('nickname:', nickname);
+    // console.log('a:', a[0].nickname);
+
+    // if (!userId) {
+    //   return res
+    //     .status(400)
+    //     .json({errorMessage: '로그인 후 이용 가능한 기능입니다.'});
+    // } else if (!nickname || !intro) {
+    //   return res
+    //     .status(400)
+    //     .json({errorMessage: '데이터 형식이 올바르지 않습니다.'});
+    // }
+    // // else if (nickname ===)
+
+    // await Users.update(
+    //   {
+    //     nickname,
+    //     intro,
+    //   },
+    //   {
+    //     where: {userId},
+    //   },
+    // );
 
     res.status(200).json({message: '프로필 수정에 성공하였습니다.'});
   } catch (err) {
