@@ -55,6 +55,10 @@ app.get('/css/detail', (req, res) => {
   res.sendFile(__dirname + '/css/detail.css');
 });
 
+app.get('/css/login', (req, res) => {
+  res.sendFile(__dirname + '/css/login.css');
+});
+
 // 테이블이 없는 경우 모델 기반으로 테이블 생성
 const {sequelize} = require('./models/index.js');
 
