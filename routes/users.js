@@ -31,50 +31,76 @@ router.post('/signup', async (req, res) => {
     if (!email || !nickname || !pw || !pwConfirm || !intro) {
       return res
         .status(400)
-        .json({errorMessage: '모든 항목을 입력해주셔야 합니다.'});
+        .send(
+          "<script>alert('모든 항목을 입력해 주셔야 합니다.');location.href='http://localhost:3000/login';</script>",
+        );
     }
 
     // 이메일 검증
     if (!checkEmail.test(email)) {
       return res
         .status(412)
-        .json({errorMessage: '이메일의 형식이 올바르지 않습니다.'});
+        .send(
+          "<script>alert('이메일의 형식이 올바르지 않습니다.');location.href='http://localhost:3000/login';</script>",
+        );
     } else if (isExistEmail) {
-      return res.status(412).json({errorMessage: '중복된 이메일입니다.'});
+      return res
+        .status(412)
+        .send(
+          "<script>alert('중복된 이메일입니다.');location.href='http://localhost:3000/login';</script>",
+        );
     }
 
     // 닉네임 검증
     if (!checkNickname.test(nickname)) {
       return res
         .status(412)
-        .json({errorMessage: '닉네임의 형식이 올바르지 않습니다.'});
+        .send(
+          "<script>alert('닉네임의 형식이 올바르지 않습니다.');location.href='http://localhost:3000/login';</script>",
+        );
     } else if (isExistNickname) {
-      return res.status(412).json({errorMessage: '중복된 닉네임입니다.'});
+      return res
+        .status(412)
+        .send(
+          "<script>alert('중복된 닉네임입니다.');location.href='http://localhost:3000/login';</script>",
+        );
     }
 
     // 패스워드 확인 : 닉네임 포함되지 않음, 4자 이상, 확인값과 일치
     if (pw !== pwConfirm) {
       return res
         .status(412)
-        .json({errorMessage: '패스워드가 일치하지 않습니다.'});
+        .send(
+          "<script>alert('비밀번호가 일치하지 않습니다.');location.href='http://localhost:3000/login';</script>",
+        );
     } else if (pw.length < 4) {
       return res
         .status(412)
-        .json({errorMessage: '패스워드 형식이 올바르지 않습니다.'});
+        .send(
+          "<script>alert('비밀번호 형식이 올바르지 않습니다.');location.href='http://localhost:3000/login';</script>",
+        );
     } else if (pw.includes(nickname)) {
       return res
         .status(412)
-        .json({errorMessage: '패스워드에 닉네임이 포함되어 있습니다.'});
+        .send(
+          "<script>alert('비밀번호에 닉네임이 포함되어 있습니다.');location.href='http://localhost:3000/login';</script>",
+        );
     }
 
     // DB에 회원가입 정보 저장 + 비밀번호 암호화
     await Users.create({email, nickname, pw: hashedPw, intro});
-    return res.status(201).json({message: '회원 가입에 성공하였습니다.'});
+    return res
+      .status(201)
+      .send(
+        "<script>alert('회원가입에 성공하였습니다. 로그인 후 사용하세요.');location.href='http://localhost:3000/login';</script>",
+      );
   } catch (error) {
     console.log(error);
     res
       .status(400)
-      .json({errorMessage: '요청한 데이터 형식이 올바르지 않습니다.'});
+      .send(
+        "<script>alert('요청한 데이터의 형식이 올바르지 않습니다.');location.href='http://localhost:3000/login';</script>",
+      );
     return;
   }
 });
@@ -89,7 +115,11 @@ router.post('/login', async (req, res) => {
 
     // 이메일 일치하지 않거나 패스워드 일치하지 않을 때
     if (!user || user.pw !== pw) {
-      return res.status(412).json({errorMessage: '로그인에 실패하였습니다.'});
+      return res
+        .status(412)
+        .send(
+          "<script>alert('로그인에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
+        );
     }
 
     // JWT 생성 : 토큰 만료 시간 1시간
@@ -98,12 +128,18 @@ router.post('/login', async (req, res) => {
     });
 
     res.cookie('Authorization', `Bearer ${token}`);
-    res.status(200).json({token});
+    res
+      .status(200)
+      .send(
+        "<script>alert('로그인에 성공하였습니다.');localStorage.setItem('login','1');location.href='http://localhost:3000/newsfeeds';</script>",
+      );
   } catch (error) {
     console.log(error);
     res
       .status(400)
-      .json({errorMessage: '요청한 데이터 형식이 올바르지 않습니다.'});
+      .send(
+        "<script>alert('로그인에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
+      );
     return;
   }
 });

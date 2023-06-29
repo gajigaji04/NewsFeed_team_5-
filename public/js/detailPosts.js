@@ -2,12 +2,12 @@ document.addEventListener('DOMContentLoaded', postListing);
 async function postListing() {
   const pagetitle = document.querySelector('#pagetitle');
   const detailPost = document.querySelector('#detailPost');
-  localStorage.setItem('postId', '1'); //나중에 뉴스피드에서 게시글 클릭시로 바꿀 예정
   const postId = localStorage.getItem('postId');
   const response = await fetch(
     `http://localhost:3000/api/posts?postId=${postId}`,
   );
   const post = await response.json();
+  console.log(post);
   pagetitle.innerHTML = `${post.data.title}`;
   if (!post) {
     detailPost.innerHTML = post.message;
@@ -94,9 +94,9 @@ async function deletepost(postId) {
       },
     );
     const result = await response.json();
-    console.log(result.data);
-    window.location.reload();
-    return alert(result.data);
+    console.log(result.message);
+    location.href = 'http://localhost:3000/newsfeeds';
+    return alert(result.message);
   } catch (error) {
     console.error('Error:', error);
   }

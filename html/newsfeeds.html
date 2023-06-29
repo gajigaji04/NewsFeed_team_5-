@@ -5,15 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="http://localhost:3000/css/newsfeeds" rel="stylesheet" type="text/css" />
+    <link href="http://localhost:3000/css/newsfeeds.css" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body>
 
     <div id=container>
+
         <header>
-            <div id=iflogined><button onclick="loginfunc()">회원가입/로그인</button></div>
+            <h1>OEM : 오늘 에러 무엇</h1>
+            <div id=iflogined>
+                <button onclick="loginfunc()" id="accountbtn">회원가입/로그인</button>
+            </div>
         </header>
 
         <main>
@@ -28,7 +32,7 @@
         </footer>
     </div>
 
-    <script type="text/javascript" src="http://localhost:3000/js/newsfeeds"></script>
+    <script type="text/javascript" src="http://localhost:3000/js/newsfeeds.js"></script>
 </body>
 
 </html>
