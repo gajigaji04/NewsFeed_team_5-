@@ -20,7 +20,7 @@ const numberpoint = document.querySelector('#number');
 async function signup() {
   if (
     localStorage.getItem('emailchecked') == 1 &&
-    localStorage.getItem('numberchecked')
+    localStorage.getItem('numberchecked') == 1
   ) {
     try {
       const email = emailpoint.value;
