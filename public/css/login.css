@@ -92,7 +92,7 @@ h1 {
   margin : 12px 0px 0px 0px  
 }
 
-#loginbox{
+#signupbtn{
   text-align: center;
 }
 
@@ -115,12 +115,8 @@ h1 {
   padding: 20px;
   border: 1px solid #888;
   border-radius: 5px;
-  width: 500px;
+  width: 350px;
   height: 600px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .form-group{
@@ -137,3 +133,10 @@ h1 {
   align-items: center;
 
 }
+
+#emailbtn{
+  width: 60px;
+  height: 40px;
+  font-size: 15px;
+}
+
