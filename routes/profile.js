@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {Users, Posts} = require('../models');
+const {Users, Posts, Op} = require('../models');
 const authMiddleware = require('../middlewares/auth-middleware.js');
 
 const router = express.Router();
@@ -59,6 +59,13 @@ router.patch('/userme', authMiddleware, async (req, res) => {
     const {userId} = res.locals.user;
     const {nickname, intro} = req.body;
 
+    const isExistNickname = await Users.findAll({
+      attributes: ['nickname'],
+      where: {
+        nickname,
+      },
+    });
+
     if (!userId) {
       return res
         .status(400)
@@ -67,6 +74,10 @@ router.patch('/userme', authMiddleware, async (req, res) => {
       return res
         .status(400)
         .json({errorMessage: '데이터 형식이 올바르지 않습니다.'});
+    } else if (isExistNickname.length) {
+      return res
+        .status(400)
+        .json({errorMessage: '사용할 수 없는 닉네임입니다.'});
     }
 
     await Users.update(

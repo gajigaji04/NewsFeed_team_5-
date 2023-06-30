@@ -7,6 +7,12 @@ const iflogined = document.querySelector('#iflogined');
 
 document.addEventListener('DOMContentLoaded', listing(allfeeds));
 
+$(document).ready(function () {
+  $('#profilebutton').on('click', function () {
+    location.href = '/profile';
+  });
+});
+
 // 피드 리스팅
 async function listing(feedname) {
   const input = document.querySelector('#feedinput').value;
@@ -36,9 +42,9 @@ async function listing(feedname) {
 const ifloginedornot = localStorage.getItem('login');
 if (ifloginedornot == '1') {
   iflogined.innerHTML = `
-                        <button class = "openmodal" id="headerbutton">새 글 작성</button>
-                        <button onclick="logoutfunc()" id="headerbutton">로그아웃</button>
-                        <button id="headerbutton">프로필</button>
+                        <button class="headerbutton" id="openmodal">새 글 작성</button>
+                        <button onclick="logoutfunc()" class="headerbutton">로그아웃</button>
+                        <button class="headerbutton" id="profilebutton">프로필</button>
                         
                         <div class="modal">
                           <div id="modal-content">
@@ -76,7 +82,7 @@ container.addEventListener('click', ({target}) => {
     localStorage.setItem('postId', target.id);
     location.href = 'http://localhost:3000/detail';
   }
-  if (target.matches(`.openmodal`)) {
+  if (target.matches(`#openmodal`)) {
     const modal = document.querySelector(`.modal`);
     modal.style.display = 'block';
   }
