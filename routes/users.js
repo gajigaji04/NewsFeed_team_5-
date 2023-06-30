@@ -8,7 +8,7 @@ const {smtpTransport} = require('../config/email.js');
 const secretKey = require('../config/secretKey.json');
 
 // 이메일 인증 API
-router.post('/authemail', async (req, res) => {
+router.post('/authEmail', async (req, res) => {
   try {
     const {email} = req.body;
 
@@ -18,7 +18,7 @@ router.post('/authemail', async (req, res) => {
     // DB에 존재하는 이메일 확인
     const isExistEmail = await Users.findOne({where: {email}});
 
-    // min~max 랜덤 숫자 생성(인증번호) + 토큰 만료 5분으로 설정
+    // min~max 랜덤 숫자 생성(인증번호)
     const randomNumber = (min, max) => {
       let num = Math.floor(Math.random() * (max - min + 1)) + min;
       return num;
@@ -28,23 +28,17 @@ router.post('/authemail', async (req, res) => {
 
     // 이메일 검증
     if (!email) {
-      return res
-        .status(404)
-        .send(
-          "<script>alert('이메일을 입력해주세요.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(400).json({
+        message: '이메일을 입력해 주세요.',
+      });
     } else if (!checkEmail.test(email)) {
-      return res
-        .status(412)
-        .send(
-          "<script>alert('이메일의 형식이 올바르지 않습니다.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(412).json({
+        message: '이메일의 형식이 올바르지 않습니다.',
+      });
     } else if (isExistEmail) {
-      return res
-        .status(412)
-        .send(
-          "<script>alert('중복된 이메일입니다.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(412).json({
+        message: '이미 가입된 이메일 계정입니다.',
+      });
     }
 
     // 인증 메일 내용
@@ -52,13 +46,13 @@ router.post('/authemail', async (req, res) => {
       from: 'oem.project.team@gmail.com',
       to: email,
       subject: '[OEM Team] 가입 인증 관련 이메일입니다.',
-      text: '오른쪽 숫자 6자리를 입력해주세요:' + number,
+      html: `인증번호 [${number}]를 입력해주세요.`,
     };
 
     smtpTransport.sendMail(mailOptions, (err, res) => {
       if (err) {
         res.status(500).json({
-          errorMessage: '예상치 못한 오류로 인해 이메일 전송에 실패하였습니다.',
+          message: '예상치 못한 오류로 인해 이메일 전송에 실패하였습니다.',
         });
       }
     });
@@ -75,7 +69,7 @@ router.post('/authemail', async (req, res) => {
     return;
   } catch (err) {
     return res.status(500).json({
-      errorMessage: '예상치 못한 오류로 인해 이메일 전송에 실패하였습니다.',
+      message: '예상치 못한 오류로 인해 이메일 전송에 실패하였습니다.',
     });
   }
 });
@@ -91,27 +85,23 @@ router.post('/authNumber', (req, res) => {
 
     // authToken 검증
     if (authType !== 'Bearer' || !authToken) {
-      return res
-        .status(403)
-        .json({errorMessage: '이메일 인증 버튼을 눌러주세요.'});
+      return res.status(403).json({message: '이메일 인증 버튼을 눌러주세요.'});
     }
 
     // authToken 만료 확인, 서버가 발급한 토큰이 맞는지 확인
     const decodedToken = jwt.verify(authToken, secretKey.key);
-    console.log('토큰 확인==============', decodedToken);
 
     // 이메일로 전송된 인증 번호 확인
-    if (Number(authNumber) !== decodedToken.number || !decodedToken.number) {
+    if (Number(authNumber) !== decodedToken.number) {
       return res.status(404).json({
-        errorMessage: '인증 번호가 일치하지 않거나 유효 시간 만료되었습니다.',
+        message: '인증 번호가 일치하지 않습니다.',
       });
     }
     res.status(201).json({message: '인증에 성공했습니다.'});
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      errorMessage:
-        '예상치 못한 오류로 인해 인증 번호 일치 확인에 실패하였습니다.',
+      message: '예상치 못한 오류로 인해 인증 번호 일치 확인에 실패하였습니다.',
     });
   }
 });
@@ -134,63 +124,47 @@ router.post('/signup', async (req, res) => {
 
     // 5가지 항목 입력 확인
     if (!email || !nickname || !pw || !pwConfirm || !intro) {
-      return res
-        .status(400)
-        .send(
-          "<script>alert('모든 항목을 입력해 주셔야 합니다.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(400).json({
+        message: '모든 항목을 입력해 주셔야 됩니다.',
+      });
     }
 
     // 닉네임 검증
     if (!checkNickname.test(nickname)) {
-      return res
-        .status(412)
-        .send(
-          "<script>alert('닉네임의 형식이 올바르지 않습니다.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(412).json({
+        message: '닉네임의 형식이 올바르지 않습니다.',
+      });
     } else if (isExistNickname) {
-      return res
-        .status(412)
-        .send(
-          "<script>alert('중복된 닉네임입니다.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(412).json({
+        message: '중복된 닉네임입니다.',
+      });
     }
 
     // 패스워드 확인 : 닉네임 포함되지 않음, 4자 이상, 확인값과 일치
     if (pw !== pwConfirm) {
-      return res
-        .status(412)
-        .send(
-          "<script>alert('비밀번호가 일치하지 않습니다.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(412).json({
+        message: '비밀번호가 일치하지 않습니다.',
+      });
     } else if (pw.length < 4) {
-      return res
-        .status(412)
-        .send(
-          "<script>alert('비밀번호 형식이 올바르지 않습니다.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(412).json({
+        message: '비밀번호 형식이 올바르지 않습니다.',
+      });
     } else if (pw.includes(nickname)) {
-      return res
-        .status(412)
-        .send(
-          "<script>alert('비밀번호에 닉네임이 포함되어 있습니다.');location.href='http://localhost:3000/login';</script>",
-        );
+      return res.status(412).json({
+        message: '비밀번호에 닉네임이 포함되어 있습니다.',
+      });
     }
 
     // DB에 회원가입 정보 저장 + 비밀번호 암호화
     await Users.create({email, nickname, pw: hashedPw, intro});
-    return res
-      .status(201)
-      .send(
-        "<script>alert('회원가입에 성공하였습니다. 로그인 후 사용하세요.');location.href='http://localhost:3000/login';</script>",
-      );
+    return res.status(201).json({
+      message: '회원가입에 성공하였습니다. 로그인 후에 이용해 주세요.',
+    });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send(
-        "<script>alert('예상치 못한 오류로 인해 회원 가입에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
-      );
+    res.status(500).json({
+      message: '예상치 못한 오류로 인해 회원가입에 실패하였습니다.',
+    });
     return;
   }
 });
@@ -210,7 +184,7 @@ router.post('/login', async (req, res) => {
       return res
         .status(412)
         .send(
-          "<script>alert('로그인에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
+          "<script>alert('이메일이나 패스워드가 일치하지 않습니다.');location.href='http://localhost:3000/login';</script>",
         );
     }
 
@@ -228,9 +202,9 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     console.log(error);
     res
-      .status(400)
+      .status(500)
       .send(
-        "<script>alert('로그인에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
+        "<script>alert('예상치 못한 오류로 인해 로그인에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
       );
     return;
   }

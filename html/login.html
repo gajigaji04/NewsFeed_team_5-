@@ -30,56 +30,45 @@
             <div class="modal">
                 <div id="modal-content">
                     <h2>회원 가입하기</h2>
-
-                    <form action="/api/signup" method="POST">
-                        <div class="form-group">
-                            <label>이메일</label>
-                            </br>
-                            <input type="text" name="email" />
-                        </div>
-                        <div class="form-group">
-                            <label>닉네임</label>
-                            </br>
-                            <input type="text" name="nickname" />
-                        </div>
-                        <div class="form-group">
-                            <label>비밀번호</label>
-                            </br>
-                            <input type="text" name="pw" />
-                        </div>
-                        <div class="form-group">
-                            <label>비밀번호 확인</label>
-                            </br>
-                            <input type="text" name="pwConfirm" />
-                        </div>
-                        <div class="form-group">
-                            <label>한 줄 소개</label>
-                            </br>
-                            <input type="text" name="intro" />
-                        </div>
-                        <button type="submit" id="modalsignup">회원가입</button>
-                    </form>
+                    <div>
+                        <label>이메일</label>
+                        </br>
+                        <input type="text" id="email" />
+                        <button onclick="verify()">인증</button>
+                    </div>
+                    <div>
+                        <label>확인번호</label>
+                        </br>
+                        <input type="text" id="number" />
+                        <button onclick="check()">확인</button>
+                    </div>
+                    <div>
+                        <label>닉네임</label>
+                        </br>
+                        <input type="text" id="nickname" />
+                    </div>
+                    <div>
+                        <label>비밀번호</label>
+                        </br>
+                        <input type="text" id="pw" />
+                    </div>
+                    <div>
+                        <label>비밀번호 확인</label>
+                        </br>
+                        <input type="text" id="pwConfirm" />
+                    </div>
+                    <div>
+                        <label>한 줄 소개</label>
+                        </br>
+                        <input type="text" id="intro" />
+                    </div>
+                    <button type="submit" id="modalsignup" onclick="signup()">회원가입</button>
                     <button class="close-modal" id="modalclose">닫기</button>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        const loginbox = document.querySelector("#loginbox")
-        loginbox.addEventListener('click', ({ target }) => {
-            if (target.matches("#signup")) {
-                const modal = document.querySelector(".modal");
-                modal.style.display = 'block';
-            }
-            if (target.matches('.close-modal')) {
-                const modal = document.querySelector(".modal");
-                modal.style.display = 'none';
-            }
-
-        });
-
-    </script>
-
+    <script type="text/javascript" src="http://localhost:3000/js/login.js"></script>
 </body>
 
 </html>
