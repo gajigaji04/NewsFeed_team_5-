@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="profile.js" type="module"></script>
+
+    <style>
+        .myWriting {
+            list-style: none;
+        }
+    </style>
+
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h1>프로필</h1>
+    </header>
+    <section>
+        <input type="text" value="email" readonly>
+        <input type="text" value="닉네임" readonly>
+        <p>한 줄 소개</p>
+        <button>수정하기</button>
+    </section>
+    <hr>
+    <section>
+        <h3>작성한 글</h3>
+        <ul>
+            <li class="myWriting">
+                <p>제목</p>
+                <p>닉네임</p>
+                <p>언어</p>
+                <p>작성 날짜</p>
+                <p>수정 날짜</p>
+            </li>
+        </ul>
+    </section>
+</body>
+</html>
