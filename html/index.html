@@ -5,13 +5,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        #OEM {
+            margin-top: 50px;
+            background-color: white;
+            color: black;
+            padding: 50px 50px 50px 50px
+        }
+
+        button {
+            background-color: rgb(89, 6, 6);
+            color: white;
+            width: 200px;
+            height: 70px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-    <div>
+    <div id="OEM">
         <h1>OEM : 오늘 에러 무엇</h1>
-        ㅒㄷ환영합니다.
+        <h3>환영합니다.</h3>
+        오늘의 에러를 공유하는 페이지입니다.</br></br>
+        <p>
+            - 만든 사람들 -</br></br>
+            김지혜</br>
+            이서원</br>
+            김주희</br>
+            김태진</br>
+            이다영</br></br></br>
+            <button onclick=opendetail()>에러 공유하기</button>
+        </p>
     </div>
+    <script>
+        function opendetail() {
+            location.href = "http://localhost:3000/newsfeeds"
+        }
+    </script>
 </body>
 
 </html>

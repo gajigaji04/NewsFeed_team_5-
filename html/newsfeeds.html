@@ -5,20 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="http://localhost:3000/css/newsfeeds" rel="stylesheet" type="text/css" />
+    <link href="http://localhost:3000/css/newsfeeds.css" rel="stylesheet" type="text/css" />
 
 </head>
 
-<body>
+<body data-editor="ClassicEditor" data-collaboration="false" data-revision-history="false">
 
     <div id=container>
+
         <header>
-            <div id=iflogined><button onclick="loginfunc()">회원가입/로그인</button></div>
+            <h1>OEM : 오늘 에러 무엇</h1>
+            <div id=iflogined>
+                <button onclick="loginfunc()" id="accountbtn">회원가입/로그인</button>
+            </div>
         </header>
 
         <main>
             <button id="allfeeds" onclick="listing(allfeeds)">전체</button>
-            <input id="feedinput" placeholder="조회하고 싶은 언어/닉네임"></input>
+            <input id="feedinput" placeholder="언어/닉네임/키워드"></input>
+            <button id="search" onclick="search()">검색</button>
             <button id="langfeeds" onclick="listing(langfeeds)">언어</button>
             <button id="userfeeds" onclick="listing(userfeeds)">닉네임</button>
         </main>
@@ -27,8 +32,32 @@
 
         </footer>
     </div>
+    <script src="../build/ckeditor.js"></script>
+    <script type="text/javascript" src="http://localhost:3000/js/newsfeeds.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('.editor'), {
 
-    <script type="text/javascript" src="http://localhost:3000/js/newsfeeds"></script>
+                licenseKey: '',
+
+
+
+
+            })
+            .then(editor => {
+                window.editor = editor;
+
+
+
+
+            })
+            .catch(error => {
+                console.error('Oops, something went wrong!');
+                console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                console.warn('Build id: m5b6f09wom88-nohdljl880ze');
+                console.error(error);
+            });
+    </script>
 </body>
 
 </html>

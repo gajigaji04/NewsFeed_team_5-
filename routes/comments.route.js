@@ -39,6 +39,12 @@ router.post('/comments', authMiddleware, async (req, res) => {
 router.get('/comments', async (req, res) => {
   const {postId} = req.query;
   const allComments = await Comments.findAll({
+    include: [
+      {
+        model: Users,
+        attributes: ['nickname'],
+      },
+    ],
     where: {postId},
     order: [['createdAt', 'desc']],
     attributes: ['content', 'createdAt', 'updatedAt', 'commentId'],
