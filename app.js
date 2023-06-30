@@ -5,11 +5,11 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const port = 3000;
-const usersRouter = require('./routes/users.js');
 
-const newsfeedsRouter = require('./routes/newsfeeds.js');
-const postsRouteRouter = require('./routes/posts.route');
-const profileRouter = require('./routes/profile.js');
+const usersRouter = require('./routes/users.route');
+const newsfeedsRouter = require('./routes/newsfeeds.route');
+const postsRouter = require('./routes/posts.route');
+const profileRouter = require('./routes/profile.route');
 const commentsRouter = require('./routes/comments.route');
 const likesRouter = require('./routes/likes.route.js');
 
@@ -20,9 +20,9 @@ app.use(express.static('public'));
 
 app.use('/api', [
   usersRouter,
-  postsRouteRouter,
-  profileRouter,
   newsfeedsRouter,
+  postsRouter,
+  profileRouter,
   commentsRouter,
   likesRouter,
 ]);
