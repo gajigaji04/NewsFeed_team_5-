@@ -18,7 +18,7 @@ router.post('/authEmail', async (req, res) => {
     // DB에 존재하는 이메일 확인
     const isExistEmail = await Users.findOne({where: {email}});
 
-    // min~max 랜덤 숫자 생성(인증번호)
+    // min~max 랜덤 숫자 생성(인증 번호)
     const randomNumber = (min, max) => {
       let num = Math.floor(Math.random() * (max - min + 1)) + min;
       return num;
@@ -46,7 +46,7 @@ router.post('/authEmail', async (req, res) => {
       from: 'oem.project.team@gmail.com',
       to: email,
       subject: '[OEM Team] 가입 인증 관련 이메일입니다.',
-      html: `인증번호 [${number}]를 입력해주세요.`,
+      html: `인증 번호 [${number}]를 입력해주세요. 인증 번호 유효 시간은 10분입니다.`,
     };
 
     smtpTransport.sendMail(mailOptions, (err, res) => {
@@ -63,9 +63,10 @@ router.post('/authEmail', async (req, res) => {
     });
 
     res.cookie('Authorization', `Bearer ${token}`);
-    res
-      .status(201)
-      .json({message: '입력하신 이메일로 인증 번호가 발송되었습니다.'});
+    res.status(201).json({
+      message:
+        '입력하신 이메일로 인증 번호가 발송되었습니다. 10분 안에 인증 번호를 입력해주세요.',
+    });
     return;
   } catch (err) {
     return res.status(500).json({
@@ -83,16 +84,13 @@ router.post('/authNumber', (req, res) => {
     const {Authorization} = req.cookies;
     const [authType, authToken] = (Authorization ?? '').split(' ');
 
-    // authToken 검증
-    if (authType !== 'Bearer' || !authToken) {
-      return res.status(403).json({message: '이메일 인증 버튼을 눌러주세요.'});
-    }
-
     // authToken 만료 확인, 서버가 발급한 토큰이 맞는지 확인
     const decodedToken = jwt.verify(authToken, secretKey.key);
 
     // 이메일로 전송된 인증 번호 확인
-    if (Number(authNumber) !== decodedToken.number) {
+    if (!authNumber) {
+      return res.status(404).json({message: '인증 번호를 입력해주세요.'});
+    } else if (Number(authNumber) !== decodedToken.number) {
       return res.status(404).json({
         message: '인증 번호가 일치하지 않습니다.',
       });
@@ -177,10 +175,17 @@ router.post('/login', async (req, res) => {
     // 이메일 일치하는 유저 찾기
     const user = await Users.findOne({where: {email}});
 
-    const match = await bcrypt.compare(pw, user.pw);
-
     // 이메일 일치하지 않거나 패스워드 일치하지 않을 때
-    if (!user || !match) {
+    if (!user) {
+      return res
+        .status(412)
+        .send(
+          "<script>alert('이메일이나 패스워드가 일치하지 않습니다.');location.href='http://localhost:3000/login';</script>",
+        );
+    }
+
+    const match = await bcrypt.compare(pw, user.pw);
+    if (!match) {
       return res
         .status(412)
         .send(

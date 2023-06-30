@@ -28,11 +28,10 @@ module.exports = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    res
+    return res
       .status(403)
       .send(
         "<script>alert('전달된 쿠키에서 오류가 발생하였습니다.');location.href='http://localhost:3000/login';</script>",
       );
-    return;
   }
 };
