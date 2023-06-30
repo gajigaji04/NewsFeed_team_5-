@@ -65,9 +65,6 @@ async function postListing() {
       const modal = document.querySelector(`#modal${target.id}`);
       modal.style.display = 'none';
     }
-    if (target.matches(`.edit${target.id}`)) {
-      // editpost(target.id, title.value, content.value, language.value);
-    }
     if (target.matches(`.deletepost${target.id}`)) {
       deletepost(target.id);
     }
@@ -99,29 +96,6 @@ function editorload() {
 }
 
 editorload();
-
-// 수정하기
-// async function editpost(postId, title, content, language) {
-//   try {
-//     const response = await fetch(
-//       `http://localhost:3000/api/posts?postId=${postId}`,
-//       {
-//         method: 'PATCH',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({content, title, language}),
-//       },
-//     );
-
-//     const result = await response.json();
-//     console.log(result.message);
-//     window.location.reload();
-//     return alert(result.message);
-//   } catch (error) {
-//     console.error('Error:', error);
-//   }
-// }
 
 // 삭제하기
 async function deletepost(postId) {
@@ -228,7 +202,7 @@ async function commentListing() {
                     <div class="modal" id =  "modal2${comment.commentId}">
                       <div id="modal-content">
                         <h3>댓글 수정하기</h3>
-                        <input type="text" class="content2${comment.commentId}" id="commenteditinput" />
+                        <textarea type="text" class="content2${comment.commentId}" id="commenteditinput" >${comment.content}</textarea>
                         <button class="close-modal2" id= "${comment.commentId}">닫기</button>
                         <button class="editcomment${comment.commentId}" id= "${comment.commentId}" >수정</button>
                       </div>
