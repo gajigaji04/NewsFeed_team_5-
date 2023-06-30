@@ -17,8 +17,14 @@ $(document).ready(function () {
 function selectIndex(response) {
   $('#nav').on('click', function (e) {
     if (e.target['id'] === 'account') {
+      $('#article').css('border', '1px');
+      $('#article').css('border-radius', '50px');
+      $('#article').css('box-shadow', '0 0 20px grey');
       getMyInfo(response['myInfo']);
     } else if (e.target['id'] === 'posts') {
+      $('#article').css('border', '0');
+      $('#article').css('border-radius', '0');
+      $('#article').css('box-shadow', '0 0 0');
       getMyPosts(response['myPosts']);
     }
   });
@@ -27,10 +33,34 @@ function selectIndex(response) {
 function getMyInfo(myInfo) {
   $('#article').empty();
   let temp_html = `<div id="myInfo">
-                      <input type="text" value="${myInfo['email']}" readonly>
-                      <input id="nickname" type="text" value="${myInfo['nickname']}" readonly>
-                      <input id="intro" type="text" value="${myInfo['intro']}" readonly>
-                      <button id="mdf-btn">수정</button>
+                      <div class="infoList">
+                        <div id="infoTitle">기본 정보</div>
+                        <div class="info"><button id="mdf-btn">수정</button></div>
+                      </div>
+                      <div class="infoList">
+                        <div>
+                          <div class="infoName">이메일</div>
+                        </div>
+                        <div>
+                          <input class="info" type="text" value="${myInfo['email']}" readonly>
+                        </div>
+                      </div>
+                      <div class="infoList">
+                        <div>
+                          <div class="infoName">닉네임</div>
+                        </div>
+                        <div>
+                          <input class="info" id="nickname" type="text" value="${myInfo['nickname']}" readonly>
+                        </div>
+                      </div>
+                      <div class="infoList">
+                        <div>
+                          <div class="infoName">한 줄 소개</div>
+                        </div>
+                        <div>
+                          <input class="info" id="intro" type="text" value="${myInfo['intro']}" readonly>
+                        </div>
+                      </div>
                   </div>`;
 
   $('#article').append(temp_html);
@@ -41,10 +71,10 @@ function getMyPosts(myPosts) {
   const $myPosts = document.createElement('ul');
   myPosts.forEach(post => {
     let temp_html = `<li class="myPost">
-                          <p>${post['title']}</p>
-                          <p>${post['language']}</p>
-                          <p>${post['createdAt']}</p>
-                          <p>${post['updatedAt']}</p>
+                          <p>제목: ${post['title']}</p>
+                          <p>사용 언어: ${post['language']}</p>
+                          <p>작성 날짜: ${post['createdAt']}</p>
+                          <p>수정 날짜: ${post['updatedAt']}</p>
                       </li>`;
 
     $myPosts.innerHTML += temp_html;
