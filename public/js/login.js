@@ -18,7 +18,10 @@ const intropoint = document.querySelector('#intro');
 const numberpoint = document.querySelector('#number');
 
 async function signup() {
-  if (localStorage.getItem('emailchecked') == 1) {
+  if (
+    localStorage.getItem('emailchecked') == 1 &&
+    localStorage.getItem('numberchecked')
+  ) {
     try {
       const email = emailpoint.value;
       const pw = pwpoint.value;
@@ -56,6 +59,11 @@ async function verify() {
     });
     const result = await response.json();
     console.log(result.message);
+    if (aftermessage.includes('성공')) {
+      localStorage.setItem('emailchecked', 1);
+    } else {
+      localStorage.setItem('emailchecked', 0);
+    }
     return alert(result.message);
   } catch (error) {
     console.error('Error:', error);
@@ -64,26 +72,30 @@ async function verify() {
 
 async function check() {
   const authNumber = Number(numberpoint.value);
-  try {
-    const response = await fetch(`http://localhost:3000/api/authNumber`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({authNumber}),
-    });
-    const result = await response.json();
-    const aftermessage = result.message;
-    console.log(aftermessage);
+  if (localStorage.getItem('emailchecked') == 1) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/authNumber`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({authNumber}),
+      });
+      const result = await response.json();
+      const aftermessage = result.message;
+      console.log(aftermessage);
 
-    if (aftermessage.includes('성공')) {
-      localStorage.setItem('emailchecked', 1);
-    } else {
-      localStorage.setItem('emailchecked', 0);
+      if (aftermessage.includes('성공')) {
+        localStorage.setItem('numberchecked', 1);
+      } else {
+        localStorage.setItem('numberchecked', 0);
+      }
+
+      return alert(result.message);
+    } catch (error) {
+      console.error('Error:', error);
     }
-
-    return alert(result.message);
-  } catch (error) {
-    console.error('Error:', error);
+  } else {
+    alert('인증번호 발송을 위해 인증 버튼을 눌러 주세요.');
   }
 }
