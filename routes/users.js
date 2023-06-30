@@ -177,8 +177,6 @@ router.post('/login', async (req, res) => {
     // 이메일 일치하는 유저 찾기
     const user = await Users.findOne({where: {email}});
 
-    const match = await bcrypt.compare(pw, user.pw);
-
     // 이메일 일치하지 않거나 패스워드 일치하지 않을 때
     if (!user || !match) {
       return res
@@ -188,6 +186,7 @@ router.post('/login', async (req, res) => {
         );
     }
 
+    const match = await bcrypt.compare(pw, user.pw);
     // JWT 생성 : 토큰 만료 시간 1시간
     const token = jwt.sign({userId: user.userId}, secretKey.key, {
       expiresIn: '1h',
