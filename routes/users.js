@@ -18,7 +18,7 @@ router.post('/authemail', async (req, res) => {
     // DB에 존재하는 이메일 확인
     const isExistEmail = await Users.findOne({where: {email}});
 
-    // min~max 랜덤 숫자 생성(인증번호) + 토큰 만료 5분으로 설정
+    // min~max 랜덤 숫자 생성(인증번호)
     const randomNumber = (min, max) => {
       let num = Math.floor(Math.random() * (max - min + 1)) + min;
       return num;
@@ -43,7 +43,7 @@ router.post('/authemail', async (req, res) => {
       return res
         .status(412)
         .send(
-          "<script>alert('중복된 이메일입니다.');location.href='http://localhost:3000/login';</script>",
+          "<script>alert('이미 가입된 이메일 계정입니다.');location.href='http://localhost:3000/login';</script>",
         );
     }
 
@@ -52,7 +52,7 @@ router.post('/authemail', async (req, res) => {
       from: 'oem.project.team@gmail.com',
       to: email,
       subject: '[OEM Team] 가입 인증 관련 이메일입니다.',
-      text: '오른쪽 숫자 6자리를 입력해주세요:' + number,
+      html: `인증번호 [${number}]를 입력해주세요.`,
     };
 
     smtpTransport.sendMail(mailOptions, (err, res) => {
@@ -98,12 +98,11 @@ router.post('/authNumber', (req, res) => {
 
     // authToken 만료 확인, 서버가 발급한 토큰이 맞는지 확인
     const decodedToken = jwt.verify(authToken, secretKey.key);
-    console.log('토큰 확인==============', decodedToken);
 
     // 이메일로 전송된 인증 번호 확인
-    if (Number(authNumber) !== decodedToken.number || !decodedToken.number) {
+    if (Number(authNumber) !== decodedToken.number) {
       return res.status(404).json({
-        errorMessage: '인증 번호가 일치하지 않거나 유효 시간 만료되었습니다.',
+        errorMessage: '인증 번호가 일치하지 않습니다.',
       });
     }
     res.status(201).json({message: '인증에 성공했습니다.'});
@@ -210,7 +209,7 @@ router.post('/login', async (req, res) => {
       return res
         .status(412)
         .send(
-          "<script>alert('로그인에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
+          "<script>alert('이메일이나 패스워드가 일치하지 않습니다.');location.href='http://localhost:3000/login';</script>",
         );
     }
 
@@ -228,9 +227,9 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     console.log(error);
     res
-      .status(400)
+      .status(500)
       .send(
-        "<script>alert('로그인에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
+        "<script>alert('예상치 못한 오류로 인해 로그인에 실패하였습니다.');location.href='http://localhost:3000/login';</script>",
       );
     return;
   }
