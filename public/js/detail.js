@@ -222,15 +222,15 @@ async function commentListing() {
                           수정일 : ${comment.updatedAt}
                         </div>
                     </div>
-                    <button class = "openmodal${comment.commentId}" id= "${comment.commentId}" >수정</button>
-                    <button class="delete${comment.commentId}" id= "${comment.commentId}">삭제</button>
+                    <button class = "openmodalcomment${comment.commentId}" id= "${comment.commentId}" >수정</button>
+                    <button class="deletecomment${comment.commentId}" id= "${comment.commentId}">삭제</button>
                     </div>
-                    <div class="modal" id =  "modal${comment.commentId}">
+                    <div class="modal" id =  "modal2${comment.commentId}">
                       <div id="modal-content">
                         <h3>댓글 수정하기</h3>
-                        <input type="text" class="content${comment.commentId}" id="commenteditinput" />
-                        <button class="close-modal" id= "${comment.commentId}">닫기</button>
-                        <button class="edit${comment.commentId}" id= "${comment.commentId}" >수정</button>
+                        <input type="text" class="content2${comment.commentId}" id="commenteditinput" />
+                        <button class="close-modal2" id= "${comment.commentId}">닫기</button>
+                        <button class="editcomment${comment.commentId}" id= "${comment.commentId}" >수정</button>
                       </div>
                     </div>
              
@@ -240,19 +240,19 @@ async function commentListing() {
   }
 
   commentsList.addEventListener('click', ({target}) => {
-    if (target.matches(`.openmodal${target.id}`)) {
-      const modal = document.querySelector(`#modal${target.id}`);
-      modal.style.display = 'block';
+    if (target.matches(`.openmodalcomment${target.id}`)) {
+      const modal2 = document.querySelector(`#modal2${target.id}`);
+      modal2.style.display = 'block';
     }
-    if (target.matches('.close-modal')) {
-      const modal = document.querySelector(`#modal${target.id}`);
-      modal.style.display = 'none';
+    if (target.matches('.close-modal2')) {
+      const modal2 = document.querySelector(`#modal2${target.id}`);
+      modal2.style.display = 'none';
     }
-    if (target.matches(`.edit${target.id}`)) {
-      const content = document.querySelector(`.content${target.id}`).value;
+    if (target.matches(`.editcomment${target.id}`)) {
+      const content = document.querySelector(`.content2${target.id}`).value;
       editcomment(target.id, content);
     }
-    if (target.matches(`.delete${target.id}`)) {
+    if (target.matches(`.deletecomment${target.id}`)) {
       deleteComment(target.id);
     }
   });
