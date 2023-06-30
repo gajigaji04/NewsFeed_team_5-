@@ -58,8 +58,9 @@ async function verify() {
       body: JSON.stringify({email}),
     });
     const result = await response.json();
-    console.log(result.message);
-    if (aftermessage.includes('성공')) {
+    const aftermessage = result.message;
+    console.log(aftermessage);
+    if (aftermessage.includes('발송')) {
       localStorage.setItem('emailchecked', 1);
     } else {
       localStorage.setItem('emailchecked', 0);
