@@ -3,8 +3,6 @@ const {Op} = require('sequelize');
 const {Posts, Users} = require('../models');
 const router = express.Router();
 const authMiddleware = require('../middlewares/auth-middleware');
-const methodOverride = require('method-override');
-router.use(methodOverride('_method'));
 
 // //게시물 전체 목록 조회 API
 // router.get('/posts', async (req, res) => {
@@ -42,6 +40,15 @@ router.get('/posts', async (req, res) => {
       },
     ],
     where: {postId: postId},
+    attributes: [
+      'postId',
+      'userId',
+      'title',
+      'createdAt',
+      'updatedAt',
+      'language',
+      'content',
+    ],
   });
 
   res.status(200).json({data: post});
@@ -53,7 +60,7 @@ router.post('/posts', authMiddleware, async (req, res) => {
   // 임시 데이터로 userId를 req.body에 넣음. 조립과정에서 팀원들과 논의하여 req.query로 변경될 예정
   // 수정, 삭제도 마찬가지
   const {title, content, language} = req.body;
-  const likes = 0;
+
   if (!language || !title || !content) {
     res
       .status(400)
@@ -61,7 +68,7 @@ router.post('/posts', authMiddleware, async (req, res) => {
         "<script>alert('데이터 형식이 올바르지 않습니다. 게시글 작성에 실패하였습니다.');location.href='http://localhost:3000/newsfeeds';</script>",
       );
   } else {
-    await Posts.create({userId, language, title, content, likes});
+    await Posts.create({userId, language, title, content});
 
     res
       .status(201)
@@ -72,8 +79,8 @@ router.post('/posts', authMiddleware, async (req, res) => {
 });
 
 //게시물 수정 API
-router.patch('/posts/:postId', authMiddleware, async (req, res) => {
-  const {postId} = req.params;
+router.patch('/posts', authMiddleware, async (req, res) => {
+  const {postId} = req.query;
   const {userId} = res.locals.user;
   const {title, content, language} = req.body;
 
@@ -82,17 +89,14 @@ router.patch('/posts/:postId', authMiddleware, async (req, res) => {
   });
 
   if (!post) {
-    return res
-      .status(400)
-      .send(
-        "<script>alert('게시글물이 존재하지 않습니다. 수정에 실패하였습니다.');location.href='http://localhost:3000/detail';</script>",
-      );
+    return res.status(400).json({
+      message: '게시물이 존재하지 않습니다. 게시글 수정에 실패하였습니다.',
+    });
   } else if (post.userId !== userId) {
-    return res
-      .status(401)
-      .send(
-        "<script>alert('요청한 데이터 형식이 올바르지 않습니다.');location.href='http://localhost:3000/detail';</script>",
-      );
+    return res.status(401).json({
+      message:
+        '요청한 데이터 형식이 올바르지 않습니다. 게시글 수정에 실패하였습니다.',
+    });
   }
   //수정
   await Posts.update(
@@ -104,11 +108,7 @@ router.patch('/posts/:postId', authMiddleware, async (req, res) => {
     },
   );
 
-  return res
-    .status(200)
-    .send(
-      "<script>alert('게시글이 수정되었습니다.');location.href='http://localhost:3000/detail';</script>",
-    );
+  return res.status(200).json({message: '게시글이 수정되었습니다.'});
 });
 
 // 게시글 삭제

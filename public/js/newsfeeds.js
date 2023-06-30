@@ -4,7 +4,6 @@ const userfeeds = 'userfeeds?nickname=';
 const container = document.querySelector('#container');
 const newsfeed = document.querySelector('#newsfeed');
 const iflogined = document.querySelector('#iflogined');
-
 document.addEventListener('DOMContentLoaded', listing(allfeeds));
 
 // 피드 리스팅
@@ -15,6 +14,8 @@ async function listing(feedname) {
     uri = feedname;
   }
   const response = await fetch(`http://localhost:3000/api/${uri}`);
+  console.log(feedname);
+  console.log(input);
   const feed = await response.json();
   newsfeed.innerHTML = feed.feeds
     .map(post => {
@@ -60,7 +61,7 @@ if (ifloginedornot == '1') {
                             
                             <div id = "modalcontent">
                                 <label>내용</label>
-                                <textarea class="editor" name="content"></textarea>
+                                <input type="text" name="content" />
                             </div>
                             <button type="submit" id ="newpostbtn">작성</button>
                             </form>
@@ -84,6 +85,12 @@ container.addEventListener('click', ({target}) => {
     const modal = document.querySelector(`.modal`);
     modal.style.display = 'none';
   }
+  if (target.matches(`.newpost`)) {
+    const content = document.querySelector('.content').value;
+    const title = document.querySelector('.title').value;
+    const language = document.querySelector('language').value;
+    newpost(content, title, language);
+  }
 });
 
 // 로그아웃
@@ -98,30 +105,4 @@ async function logoutfunc() {
 // 회원가입/로그인
 function loginfunc() {
   location.href = 'http://localhost:3000/login';
-}
-
-// 검색
-async function search() {
-  const response = await fetch(`http://localhost:3000/api/allfeeds`);
-  const feed = await response.json();
-  const input = document.querySelector('#feedinput').value;
-  newsfeed.innerHTML = feed.feeds
-    .map(post => {
-      if (post.content.includes(input)) {
-        return `
-                <div id = "postbox">
-                  <div class ="postbox${post.postId}" id ="${post.postId}">
-                      <h3 class ="postbox${post.postId}" id ="${post.postId}">${post.title}</h3>
-                      <div class ="postbox${post.postId}" id ="${post.postId}">작성자: ${post.User.nickname}</div>
-                      <div class ="postbox${post.postId}" id ="${post.postId}">언어 : ${post.language}</div>
-                      <div class ="postbox${post.postId}" id ="${post.postId}">작성 시간 : ${post.createdAt}</div>
-                      <div class ="postbox${post.postId}" id ="${post.postId}">수정 시간 : ${post.updatedAt}</div>
-                  </div>
-                </div>
-                `;
-      } else {
-        return;
-      }
-    })
-    .join('');
 }

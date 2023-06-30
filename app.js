@@ -11,7 +11,6 @@ const newsfeedsRouter = require('./routes/newsfeeds.js');
 const postsRouteRouter = require('./routes/posts.route');
 const profileRouter = require('./routes/profile.js');
 const commentsRouter = require('./routes/comments.route');
-const likesRouter = require('./routes/likes.route.js');
 
 app.use(express.json());
 app.use(CookieParser());
@@ -24,7 +23,6 @@ app.use('/api', [
   profileRouter,
   newsfeedsRouter,
   commentsRouter,
-  likesRouter,
 ]);
 
 app.listen(port, () => {
