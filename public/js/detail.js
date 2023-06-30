@@ -291,3 +291,7 @@ async function deleteComment(commentId) {
   alert(result.message);
   return;
 }
+
+function locationwhere() {
+  location.href = 'http://localhost:3000/newsfeeds';
+}

@@ -25,8 +25,9 @@
                 </div>
                 <button id="login" type="submit" class="btn btn-outline-secondary-login">로그인</button>
             </form>
-            <button id="signup">회원가입</button>
-
+            <div id="signupbtn">
+                <button id="signup">회원가입</button>
+            </div>
             <div class="modal">
                 <div id="modal-content">
                     <h2>회원 가입하기</h2>
@@ -34,13 +35,13 @@
                         <label>이메일</label>
                         </br>
                         <input type="text" id="email" />
-                        <button onclick="verify()">인증</button>
+                        <button id="emailbtn" onclick="verify()">인증</button>
                     </div>
                     <div>
                         <label>확인번호</label>
                         </br>
                         <input type="text" id="number" />
-                        <button onclick="check()">확인</button>
+                        <button id="emailbtn" onclick="check()">확인</button>
                     </div>
                     <div>
                         <label>닉네임</label>

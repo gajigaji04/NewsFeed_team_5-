@@ -19,7 +19,18 @@
             margin-top: 50px;
             background-color: white;
             color: black;
-            padding: 50px 50px 50px 50px
+            padding: 50px 50px 50px 50px;
+            animation: fadeout 3s;
+        }
+
+        @keyframes fadeout {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         button {
@@ -30,6 +41,20 @@
             border: none;
             border-radius: 10px;
             font-size: 15px;
+
+
+        }
+
+        button:hover {
+            background-color: rgb(145, 6, 6);
+            color: white;
+            width: 200px;
+            height: 70px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+
+
         }
 
         p {
