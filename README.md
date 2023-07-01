@@ -80,14 +80,14 @@
 
 - 댓글 CRUD : CRUD시 새로고침
 
-# 3. 와이어 프레임
+# 3. 초기 와이어 프레임
 ![](https://velog.velcdn.com/images/gajigaji04/post/fc8e05a7-6072-4749-8ba9-a582ae77131d/image.png)
 
-# 4. ERD 설계
+# 4. 초기 ERD 설계
 
 ![](https://velog.velcdn.com/images/gajigaji04/post/f39c9c6f-f33f-4759-8eff-3b8b6d4bad99/image.png)
 
-# 5. API 명세
+# 5. 초기 API 명세
 
 ![](https://velog.velcdn.com/images/gajigaji04/post/3ec7c834-c174-4651-9b8b-333b005a7197/image.png)
 
