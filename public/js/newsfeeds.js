@@ -111,7 +111,7 @@ function loginfunc() {
   location.href = 'http://localhost:3000/login';
 }
 
-// 검색
+// 검색 기능
 async function search() {
   const response = await fetch(`http://localhost:3000/api/allfeeds`);
   const feed = await response.json();
