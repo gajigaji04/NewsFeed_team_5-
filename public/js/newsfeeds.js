@@ -94,7 +94,12 @@ container.addEventListener('click', ({target}) => {
 
 // 로그아웃
 async function logoutfunc() {
-  const response = await fetch('http://localhost:3000/api/logout');
+  const response = await fetch('http://localhost:3000/api/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   const message = await response.json();
   alert(message.message);
   localStorage.setItem('login', '0');

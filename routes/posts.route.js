@@ -97,7 +97,7 @@ router.delete('/posts', authMiddleware, async (req, res) => {
     return res.status(401).json({message: '게시물 삭제 권한이 없습니다.'});
   }
 
-  //식제
+  //삭제
   await Posts.destroy({
     where: {
       [Op.and]: [{postId}, {userId}],
