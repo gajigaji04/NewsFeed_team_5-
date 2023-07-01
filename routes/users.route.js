@@ -175,7 +175,6 @@ router.post('/login', async (req, res) => {
     // 이메일 일치하는 유저 찾기
     const user = await Users.findOne({where: {email}});
 
-    // 이메일 일치하지 않거나 패스워드 일치하지 않을 때
     if (!user) {
       return res
         .status(412)
@@ -184,7 +183,9 @@ router.post('/login', async (req, res) => {
         );
     }
 
+    // 비밀번호 검증
     const match = await bcrypt.compare(pw, user.pw);
+
     if (!match) {
       return res
         .status(412)
@@ -202,7 +203,7 @@ router.post('/login', async (req, res) => {
     res
       .status(200)
       .send(
-        "<script>alert('로그인에 성공하였습니다.');localStorage.setItem('login','1');location.href='http://localhost:3000/newsfeeds';</script>",
+        "<script>alert('로그인 되었습니다.');localStorage.setItem('login','1');location.href='http://localhost:3000/newsfeeds';</script>",
       );
   } catch (error) {
     console.log(error);
@@ -216,11 +217,18 @@ router.post('/login', async (req, res) => {
 });
 
 // 로그아웃 API
-router.get('/logout', (req, res) => {
-  return res
-    .clearCookie('Authorization')
-    .status(200)
-    .json({message: '로그아웃 되었습니다.'});
+router.post('/logout', (req, res) => {
+  try {
+    return res
+      .clearCookie('Authorization')
+      .status(200)
+      .json({message: '로그아웃 되었습니다.'});
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({message: '에상치 못한 오류로 인해 로그아웃에 실패하였습니다.'});
+  }
 });
 
 module.exports = router;
