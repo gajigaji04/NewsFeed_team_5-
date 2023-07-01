@@ -58,11 +58,11 @@ router.post('/authEmail', async (req, res) => {
     });
 
     // JWT 생성 : 토큰 만료 시간 10분
-    const token = jwt.sign({number}, secretKey.key, {
+    const emailToken = jwt.sign({number}, secretKey.key, {
       expiresIn: '10m',
     });
 
-    res.cookie('Authorization', `Bearer ${token}`);
+    res.cookie('emailAuth', `Bearer ${emailToken}`);
     res.status(201).json({
       message:
         '입력하신 이메일로 인증 번호가 발송되었습니다. 10분 안에 인증 번호를 입력해주세요.',
@@ -81,11 +81,11 @@ router.post('/authNumber', (req, res) => {
     const {authNumber} = req.body;
 
     // 인증 번호 토큰이 맞는지 확인
-    const {Authorization} = req.cookies;
-    const [authType, authToken] = (Authorization ?? '').split(' ');
+    const {emailAuth} = req.cookies;
+    const [emailAuthType, emailAuthToken] = (emailAuth ?? '').split(' ');
 
-    // authToken 만료 확인, 서버가 발급한 토큰이 맞는지 확인
-    const decodedToken = jwt.verify(authToken, secretKey.key);
+    // emailAuthToken 만료 확인, 서버가 발급한 토큰이 맞는지 확인
+    const decodedToken = jwt.verify(emailAuthToken, secretKey.key);
 
     // 이메일로 전송된 인증 번호 확인
     if (!authNumber) {
@@ -127,17 +127,6 @@ router.post('/signup', async (req, res) => {
       });
     }
 
-    // 닉네임 검증
-    if (!checkNickname.test(nickname)) {
-      return res.status(412).json({
-        message: '닉네임의 형식이 올바르지 않습니다.',
-      });
-    } else if (isExistNickname) {
-      return res.status(412).json({
-        message: '중복된 닉네임입니다.',
-      });
-    }
-
     // 패스워드 확인 : 닉네임 포함되지 않음, 4자 이상, 확인값과 일치
     if (pw !== pwConfirm) {
       return res.status(412).json({
@@ -150,6 +139,17 @@ router.post('/signup', async (req, res) => {
     } else if (pw.includes(nickname)) {
       return res.status(412).json({
         message: '비밀번호에 닉네임이 포함되어 있습니다.',
+      });
+    }
+
+    // 닉네임 검증
+    if (!checkNickname.test(nickname)) {
+      return res.status(412).json({
+        message: '닉네임의 형식이 올바르지 않습니다.',
+      });
+    } else if (isExistNickname) {
+      return res.status(412).json({
+        message: '중복된 닉네임입니다.',
       });
     }
 
