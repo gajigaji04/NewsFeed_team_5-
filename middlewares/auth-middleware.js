@@ -22,7 +22,6 @@ module.exports = async (req, res, next) => {
 
     // userId 사용자 DB에 있는지 확인
     const user = await Users.findOne({where: {userId}});
-    // console.log('=====================', user);
     res.locals.user = user;
 
     next();
@@ -31,7 +30,7 @@ module.exports = async (req, res, next) => {
     return res
       .status(403)
       .send(
-        "<script>alert('전달된 쿠키에서 오류가 발생하였습니다.');location.href='http://localhost:3000/login';</script>",
+        "<script>alert('유효 시간 만료로 자동 로그아웃 되었습니다. 다시 로그인해주세요.');location.href='http://localhost:3000/login';</script>",
       );
   }
 };
