@@ -77,14 +77,12 @@ router.post('/authEmail', async (req, res) => {
 
 // 인증 번호 일치 확인 API
 router.post('/authNumber', (req, res) => {
+  const {authNumber} = req.body;
+
+  const {emailAuth} = req.cookies;
+  const [emailAuthType, emailAuthToken] = (emailAuth ?? '').split(' ');
+
   try {
-    const {authNumber} = req.body;
-
-    // 인증 번호 토큰이 맞는지 확인
-    const {emailAuth} = req.cookies;
-    const [emailAuthType, emailAuthToken] = (emailAuth ?? '').split(' ');
-
-    // emailAuthToken 만료 확인, 서버가 발급한 토큰이 맞는지 확인
     const decodedToken = jwt.verify(emailAuthToken, secretKey.key);
 
     // 이메일로 전송된 인증 번호 확인
@@ -96,10 +94,10 @@ router.post('/authNumber', (req, res) => {
       });
     }
     res.status(201).json({message: '인증에 성공했습니다.'});
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      message: '예상치 못한 오류로 인해 인증 번호 일치 확인에 실패하였습니다.',
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({
+      message: '인증 번호 유효시간이 만료되었습니다.',
     });
   }
 });
