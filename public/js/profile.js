@@ -7,6 +7,7 @@ $(document).ready(function () {
       getMyInfo(response['myInfo']);
       selectIndex(response);
       modify();
+      clickedMyPost();
     },
     error: function (response) {
       alert(response.responseJSON['errorMessage']);
@@ -17,14 +18,8 @@ $(document).ready(function () {
 function selectIndex(response) {
   $('#nav').on('click', function (e) {
     if (e.target['id'] === 'account') {
-      $('#article').css('border', '1px');
-      $('#article').css('border-radius', '50px');
-      $('#article').css('box-shadow', '0 0 20px grey');
       getMyInfo(response['myInfo']);
     } else if (e.target['id'] === 'posts') {
-      $('#article').css('border', '0');
-      $('#article').css('border-radius', '0');
-      $('#article').css('box-shadow', '0 0 0');
       getMyPosts(response['myPosts']);
     }
   });
@@ -32,6 +27,8 @@ function selectIndex(response) {
 
 function getMyInfo(myInfo) {
   $('#article').empty();
+  const $article = document.querySelector('article');
+  $article.setAttribute('id', 'article1');
   let temp_html = `<div id="myInfo">
                       <div class="infoList">
                         <div id="infoTitle">기본 정보</div>
@@ -63,14 +60,17 @@ function getMyInfo(myInfo) {
                       </div>
                   </div>`;
 
-  $('#article').append(temp_html);
+  $article.innerHTML = temp_html;
+  $('#body').append($article);
 }
 
 function getMyPosts(myPosts) {
   $('#article').empty();
+  const $article = document.querySelector('article');
+  $article.setAttribute('id', 'article2');
   const $myPosts = document.createElement('ul');
   myPosts.forEach(post => {
-    let temp_html = `<li class="myPost">
+    let temp_html = `<li id="${post['postId']}" class="myPost">
                           <p>제목: ${post['title']}</p>
                           <p>사용 언어: ${post['language']}</p>
                           <p>작성 날짜: ${post['createdAt']}</p>
@@ -79,7 +79,22 @@ function getMyPosts(myPosts) {
 
     $myPosts.innerHTML += temp_html;
   });
-  $('#article').append($myPosts);
+  $article.innerHTML = $myPosts.innerHTML;
+  $('#body').append($article);
+}
+
+function clickedMyPost() {
+  $('#body').on('click', function (e) {
+    if (e.target.matches('.myPost')) {
+      localStorage.setItem('postId', e.target.id);
+      location.href = 'http://localhost:3000/detail';
+    } else if (e.target.parentNode.className === 'myPost') {
+      localStorage.setItem('postId', e.target.parentNode.id);
+      location.href = 'http://localhost:3000/detail';
+    } else {
+      return;
+    }
+  });
 }
 
 let duplicationCheck = true;
@@ -121,3 +136,7 @@ function modify() {
     }
   });
 }
+
+$('#home-btn').on('click', function () {
+  location.href = 'http://localhost:3000/newsfeeds';
+});
